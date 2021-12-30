@@ -5,6 +5,7 @@ import 'dart:isolate';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:watch_is_watch/main.dart';
 
@@ -59,7 +60,9 @@ class NotificationController extends ChangeNotifier{
 
   void selectNotification(String? payload) async{
 
-
+    // FirebaseMessaging.instance.setIsSelectedTrue();
+    
+    
     print('select notification');
     if(payload != null){
       debugPrint('notificaition payload : $payload');

@@ -13,7 +13,7 @@ class FcmController {
 
   FcmController._internal(){
     
-    // getFcmToken().then((value) => print(value));
+    getFcmToken().then((value) => print(value));
     // print('FcmController._internal()');
     
     // FirebaseMessaging.onMessageOpenedApp.listen((event) {

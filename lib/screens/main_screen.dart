@@ -108,7 +108,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
                       color: Colors.red,
                       child: InkWell(
                         onTap: () async{
-                          Navigator.pushNamed(context, '/mission');
+                          // Navigator.pushNamed(context, '/mission');
+                          NotificationController().showNotification();
                         },
                       ),
                     )

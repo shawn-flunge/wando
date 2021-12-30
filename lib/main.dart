@@ -22,76 +22,42 @@ void main() async{
   // FirebaseMessaging.onBackgroundMessage(NotificationController.onBackgroundHandler);
   
   NotificationController().init();
-  // init();
 
-  // SharedPreferences pref = await SharedPreferences.getInstance();
-  // pref.setBool('isSelect', false);
-  // bool isSelect = pref.getBool('isSelect')??false;
-  // print('main.isSelect : $isSelect');
-
-
-  
 
   runApp(MyApp());
 }
 
-NotificationController nc2 = NotificationController();
-
 
 Future<void> onBackgroundHandler(RemoteMessage message) async {
+  const MethodChannel methodChannel = MethodChannel('plugins.flutter.io/firebase_messaging');
   print('onBackgroundMessage: ${message.data}');
 
-  // print('obg.isSelect : ${pref.getBool('isSelect')}');
+  print('obg.isSelect : ');
+  bool isSelected = false;
 
+  methodChannel.setMethodCallHandler((call){
+    print('obg.methodChannel.setMethodCallHandler');
+
+    if(call.method == 'Messaging#answerIsSelected'){
+      isSelected = call.arguments as bool;
+      print('obg.setHanlder.isSelecte : $isSelected');
+    }
+    return Future.value();
+  });
   
-
   
-  Timer.periodic(const Duration(seconds: 10), (timer) async{
-
+  Timer.periodic(const Duration(seconds: 5), (timer) async{
+    methodChannel.invokeMethod('Messaging#askIsSelected');
+    print('obg.timer.isSelected : $isSelected');
+    
+    // methodChannel.invokeMethod('Messaging#temp');
+    // print('ss : $ss');
+    
+    if(isSelected) timer.cancel();
     NotificationController().showNotification();
-
   });
 
   return Future.value();
-}
-
-bool isSelectedd = false;
-Timer? timer;
-
-Future<void> init() async{
-  print('main.init');
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-  const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-  final IOSInitializationSettings iosInitializationSettings = IOSInitializationSettings(
-    onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-  );
-
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: androidInitializationSettings,
-    iOS: iosInitializationSettings,
-  );
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onSelectNotification: selectNotification
-  );
-
-}
-
-void onDidReceiveLocalNotification(int id, String? title, String? body, String? payload){
-
-}
-
-void selectNotification(String? payload) async{
-
-  print('main. select notification');
-  if(payload != null){
-    debugPrint('notificaition payload : $payload');
-  }
-
-  // MyApp.navigatorKey.currentState!.pushNamed('/mission', arguments:'temp');
-  
 }
 
 
