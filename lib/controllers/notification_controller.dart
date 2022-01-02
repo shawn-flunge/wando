@@ -48,6 +48,7 @@ class NotificationController extends ChangeNotifier{
       onSelectNotification: selectNotification
     );
 
+    
     _instance.addListener(() {
       print('hihihihihi');
       
@@ -60,7 +61,7 @@ class NotificationController extends ChangeNotifier{
 
   void selectNotification(String? payload) async{
 
-    // FirebaseMessaging.instance.setIsSelectedTrue();
+    FirebaseMessaging.instance.setIsSelectedTrue();
     
     
     print('select notification');
@@ -68,7 +69,7 @@ class NotificationController extends ChangeNotifier{
       debugPrint('notificaition payload : $payload');
     }
 
-    MyApp.navigatorKey.currentState!.pushNamed('/mission', arguments:'temp');
+    // MyApp.navigatorKey.currentState!.pushNamed('/mission', arguments:'temp');
     
   }
 

@@ -46,7 +46,7 @@ Future<void> onBackgroundHandler(RemoteMessage message) async {
   });
   
   
-  Timer.periodic(const Duration(seconds: 5), (timer) async{
+  Timer.periodic(const Duration(seconds: 2), (timer) {
     methodChannel.invokeMethod('Messaging#askIsSelected');
     print('obg.timer.isSelected : $isSelected');
     
