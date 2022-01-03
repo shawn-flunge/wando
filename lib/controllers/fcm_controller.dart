@@ -25,10 +25,10 @@ class FcmController {
 
 
     FirebaseMessaging.onMessage.listen((event) {
-      
-      print('full' + event.data.toString());
-      print('title ' + event.data['title'].toString());
-      print('body.questions' + event.data['body'].toString());
+      print('full : ' + event.contentAvailable.toString());
+      // print('full : ' + event.data.toString());
+      // print('title : ' + event.data['title'].toString());
+      // print('body.questions : ' + event.data['body'].toString());
       nc.showNotification();
     });
   }

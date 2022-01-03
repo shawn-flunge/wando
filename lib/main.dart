@@ -19,7 +19,13 @@ void main() async{
   await Firebase.initializeApp();
 
   FirebaseMessaging.onBackgroundMessage(onBackgroundHandler);
-  // FirebaseMessaging.onBackgroundMessage(NotificationController.onBackgroundHandler);
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true
+  );
   
   NotificationController().init();
 
@@ -47,7 +53,7 @@ Future<void> onBackgroundHandler(RemoteMessage message) async {
   
   
   Timer.periodic(const Duration(seconds: 2), (timer) {
-    methodChannel.invokeMethod('Messaging#askIsSelected');
+    if(Platform.isAndroid) methodChannel.invokeMethod('Messaging#askIsSelected');
     print('obg.timer.isSelected : $isSelected');
     
     // methodChannel.invokeMethod('Messaging#temp');

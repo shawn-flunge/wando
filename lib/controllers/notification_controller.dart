@@ -1,6 +1,7 @@
 
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -61,7 +62,8 @@ class NotificationController extends ChangeNotifier{
 
   void selectNotification(String? payload) async{
 
-    FirebaseMessaging.instance.setIsSelectedTrue();
+    if(Platform.isAndroid) FirebaseMessaging.instance.setIsSelectedTrue();
+    
     
     
     print('select notification');
