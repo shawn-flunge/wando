@@ -62,9 +62,10 @@ class NotificationController extends ChangeNotifier{
 
   void selectNotification(String? payload) async{
 
-    if(Platform.isAndroid) FirebaseMessaging.instance.setIsSelectedTrue();
-    
-    
+    // if(Platform.isAndroid) FirebaseMessaging.instance.setIsSelectedTrue();
+    // FirebaseMessaging.instance.setIsSelectedTrue();
+    const MethodChannel methodChannel = MethodChannel('plugins.flutter.io/firebase_messaging');
+    methodChannel.invokeMethod('Messaging#setIsSelectedFalse');
     
     print('select notification');
     if(payload != null){

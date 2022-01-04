@@ -14,21 +14,13 @@ class FcmController {
   FcmController._internal(){
     
     getFcmToken().then((value) => print(value));
-    hihi();
-    // print('FcmController._internal()');
 
-    
-    
     // FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    //   print('onMessageOpenedApp /// ${event.data}');
+    //   print('onMessageOpenedApp');
     // });
-
-
     FirebaseMessaging.onMessage.listen((event) {
-      print('full : ' + event.contentAvailable.toString());
-      // print('full : ' + event.data.toString());
-      // print('title : ' + event.data['title'].toString());
-      // print('body.questions : ' + event.data['body'].toString());
+      print('onMessage receive :${event.data}');
+      print('onMessage receive :${event.contentAvailable}');
       nc.showNotification();
     });
   }
@@ -37,18 +29,7 @@ class FcmController {
     return _instance;
   }
 
-  Future<void> hihi() async{
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    print('User granted permission: ${settings.authorizationStatus}');
-  }
+  
 
   Future<String?> getFcmToken() async{
     final token =await messaging.getToken();

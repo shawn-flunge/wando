@@ -36,29 +36,38 @@ void main() async{
 
 Future<void> onBackgroundHandler(RemoteMessage message) async {
   const MethodChannel methodChannel = MethodChannel('plugins.flutter.io/firebase_messaging');
+  methodChannel.invokeMethod('Messaging#setIsSelectedFalse');
   print('onBackgroundMessage: ${message.data}');
 
-  print('obg.isSelect : ');
   bool isSelected = false;
-
+  
   methodChannel.setMethodCallHandler((call){
-    print('obg.methodChannel.setMethodCallHandler');
 
-    if(call.method == 'Messaging#answerIsSelected'){
-      isSelected = call.arguments as bool;
-      print('obg.setHanlder.isSelecte : $isSelected');
+    switch (call.method){
+      case 'Messaging#answerIsSelected':
+        print('Messaging#answerIsSelected : ${call.method} // ${call.arguments}');
+        if(Platform.isIOS){
+          if(call.arguments == 'NO') {
+            isSelected = false;
+          } else {
+            isSelected = true;
+          }
+        } else{
+          isSelected = call.arguments as bool;
+        }
+        break;
+      default:
+        print('default : ${call.method} // ${call.arguments}');
+        break;
     }
+
     return Future.value();
   });
-  
+
   
   Timer.periodic(const Duration(seconds: 2), (timer) {
-    if(Platform.isAndroid) methodChannel.invokeMethod('Messaging#askIsSelected');
-    print('obg.timer.isSelected : $isSelected');
-    
-    // methodChannel.invokeMethod('Messaging#temp');
-    // print('ss : $ss');
-    
+    methodChannel.invokeMethod('Messaging#askIsSelected');
+
     if(isSelected) timer.cancel();
     NotificationController().showNotification();
   });

@@ -19,6 +19,7 @@ import 'package:watch_is_watch/foundation/typography.dart';
 import 'package:watch_is_watch/controllers/notification_controller.dart';
 import 'package:watch_is_watch/widets/alarm_card.dart';
 import 'package:watch_is_watch/widets/floating_flow_button.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 class MainScreen extends StatefulWidget{
   const MainScreen({Key? key}) : super(key: key);
@@ -42,7 +43,21 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
+    hihi();
+  }
 
+  Future<void> hihi() async{
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    
+    print('User granted permission: ${settings.authorizationStatus}');
   }
 
   @override
@@ -108,8 +123,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
                       color: Colors.red,
                       child: InkWell(
                         onTap: () async{
-                          // Navigator.pushNamed(context, '/mission');
-                          NotificationController().showNotification();
+                          Navigator.pushNamed(context, '/mission');
+                          // NotificationController().showNotification();
                         },
                       ),
                     )
