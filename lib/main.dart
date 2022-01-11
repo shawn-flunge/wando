@@ -11,6 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:watch_is_watch/controllers/notification_controller.dart';
 import 'package:watch_is_watch/screens/mission_screen.dart';
+import 'package:watch_is_watch/utilities/app_utility.dart';
 
 
 
@@ -37,24 +38,23 @@ void main() async{
 Future<void> onBackgroundHandler(RemoteMessage message) async {
   const MethodChannel methodChannel = MethodChannel('plugins.flutter.io/firebase_messaging');
   methodChannel.invokeMethod('Messaging#setIsSelectedFalse');
-  print('onBackgroundMessage: ${message.data}');
 
   bool isSelected = false;
   
   methodChannel.setMethodCallHandler((call){
-
+    
     switch (call.method){
       case 'Messaging#answerIsSelected':
-        print('Messaging#answerIsSelected : ${call.method} // ${call.arguments}');
-        if(Platform.isIOS){
-          if(call.arguments == 'NO') {
-            isSelected = false;
-          } else {
-            isSelected = true;
-          }
-        } else{
-          isSelected = call.arguments as bool;
-        }
+        // if(Platform.isIOS){
+        //   if(call.arguments == 'NO') {
+        //     isSelected = false;
+        //   } else {
+        //     isSelected = true;
+        //   }
+        // } else{
+        //   isSelected = call.arguments as bool;
+        // }
+        isSelected = AppUtil.returnBoolValueAccordingToPlatform(call.arguments);
         break;
       default:
         print('default : ${call.method} // ${call.arguments}');
@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
       //   // '/mission' : (context) => MaterialPageRoute(builder: (context)=>MissionScreen())
       // },
       onGenerateRoute: (settings){
-        print('❤ onGenerateRoute : ${settings}');
+        print('onGenerateRoute : ${settings}');
         if(settings.name =='/'){
           return MaterialPageRoute(builder: (context) => MainScreen());
         }
@@ -113,10 +113,4 @@ class MyApp extends StatelessWidget {
       home: MainScreen(),
     );
   }
-}
-
-
-class NCBascket{
-
-  static NotificationController nc = NotificationController();
 }

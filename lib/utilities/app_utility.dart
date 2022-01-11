@@ -1,4 +1,6 @@
 
+import 'dart:core';
+import 'dart:io';
 import 'dart:math' as math;
 
 abstract class AppUtil{
@@ -12,4 +14,19 @@ abstract class AppUtil{
     return degree * (math.pi / 180);
   }
 
+  static bool asff(dynamic argument){
+    
+    if(Platform.isIOS){
+      if(argument == 'NO'){
+        return false;
+      } else{
+        return true;
+      }
+    } else{
+      // return argument as bool;
+      return bool.fromEnvironment(argument);
+    }
+  }
+
 }
+
